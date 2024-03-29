@@ -13,44 +13,49 @@ dynamic_array::~dynamic_array()
 	delete[] array;
 }
 
-//Dodanie elementu na pocz¹tek tablicy
+//Dodanie elementu na poczÄ…tek tablicy
 void dynamic_array::add_begin(int element)
 {
-	//Jeœli tablica jest pe³na, to rozmiar zostaje podwojony
+	//JeÅ›li tablica jest peÅ‚na, to rozmiar zostaje podwojony
 	if (size == capacity) {
 		capacity *= 2;
 		int* newArray = new int[capacity];
-		//Skopiowanie zawartoœci starej tablicy do nowej
+		//Skopiowanie zawartoÅ›ci starej tablicy do nowej
 		for (int i = 0; i < size; ++i) {
 			newArray[i] = array[i];
 		}
-		//Zwolnienie pamiêci starej tablicy
+		//Zwolnienie pamiÄ™ci starej tablicy
 		delete[] array;
-		//Przypisanie nowej tablicy do wskaŸnika
+		//Przypisanie nowej tablicy do wskaÅºnika
 		array = newArray;
 	}
-	//Dodanie elementu na pocz¹tek tablicy
-	array[++size] = element;
+	
+	//Przesuniecie wszystkich elementow o jeden w prawo
+	for (int i = size; i > 0; --i) {
+		array[i] = array[i - 1];
+	}
+	array[0] = element; //Dodanie elementu na poczÄ…tek tablicy
+	++size; //Zwiekszenie rozmiaru tablicy
 }
 
 //Dodanie elementu na koniec tablicy
 void dynamic_array::add_end(int element)
 {
-	//Jeœli tablica jest pe³na, to rozmiar zostaje podwojony
+	//JeÅ›li tablica jest peÅ‚na, to rozmiar zostaje podwojony
 	if (size == capacity) {
 		capacity *= 2;
 		int* newArray = new int[capacity];
-		//Skopiowanie zawartoœci starej tablicy do nowej
+		//Skopiowanie zawartoÅ›ci starej tablicy do nowej
 		for (int i = 0; i < size; ++i) {
 			newArray[i] = array[i];
 		}
-		//Zwolnienie pamiêci starej tablicy
+		//Zwolnienie pamiÄ™ci starej tablicy
 		delete[] array;
-		//Przypisanie nowej tablicy do wskaŸnika
+		//Przypisanie nowej tablicy do wskaÅºnika
 		array = newArray;
 	}
 	//Dodanie elementu na koniec tablicy
-	array[size++] = element;
+	array[++size] = element;
 }
 
 //Dodanie elementu w losowe miejsce tablicy
@@ -59,26 +64,78 @@ void dynamic_array::add_random(int element)
 	//Wygenerowanie losowego indeksu od 0 do size
 	int randomIndex = rand() % (size + 1);
 
-	//Jeœli tablica jest pe³na, to rozmiar zostaje podwojony
+	//JeÅ›li tablica jest peÅ‚na, to rozmiar zostaje podwojony
 	if (size == capacity) {
 		capacity *= 2;
 		int* newArray = new int[capacity];
-		//Skopiowanie zawartoœci starej tablicy do nowej
+		//Skopiowanie zawartoÅ›ci starej tablicy do nowej
 		for (int i = 0; i < size; ++i) {
 			newArray[i] = array[i];
 		}
-		//Zwolnienie pamiêci starej tablicy
+		//Zwolnienie pamiÄ™ci starej tablicy
 		delete[] array;
-		//Przypisanie nowej tablicy do wskaŸnika
+		//Przypisanie nowej tablicy do wskaÅºnika
 		array = newArray;
 	}
 
-	//Przesuniêcie elementów od randomIndex do size w prawo
+	//PrzesuniÄ™cie elementÃ³w od randomIndex do size w prawo
 	for (int i = size; i > randomIndex; --i) {
 		array[i] = array[i - 1];
 	}
 
-	//Wstawienie nowego elementu na losow¹ pozycjê
+	//Wstawienie nowego elementu na losowÄ… pozycjÄ™
 	array[randomIndex] = element;
-	++size; //Zwiêkszenie rozmiaru tablicy
+	++size; //ZwiÄ™kszenie rozmiaru tablicy
+}
+
+//UsuniÄ™cie elementu na poczÄ…tku tablicy
+void dynamic_array::delete_begin()
+{
+	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
+	if (size == 0) {
+		throw std::runtime_error("Tablica jest pusta.");
+	}
+
+	//Przesuniecie elementow od size do pierwszego elementu w lewo
+	for (int i = 1; i <= size; i++) {
+		array[i - 1] = array[i];
+	}
+	--size; //Zmniejszenie rozmiaru tablicy
+}
+
+//Usuniecie elementu na koncu tablicy
+void dynamic_array::delete_end()
+{
+	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
+	if (size == 0) {
+		throw std::runtime_error("Tablica jest pusta.");
+	}
+	--size; //Zmniejszenie rozmiaru tablicy
+}
+
+//Usuniecie elementu w losowym miejscu tablicy
+void dynamic_array::delete_random()
+{
+	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
+	if (size == 0) {
+		throw std::runtime_error("Tablica jest pusta.");
+	}
+	//Wylosowanie indeksu miejsca tablicy
+	int randomIndex = rand() % size;
+
+	//Przesuniecie elementow od size do randomIndex w lewo
+	for (int i = randomIndex + 1; i <= size; ++i) {
+		array[i - 1] = array[i];
+	}
+	--size; //Zmniejszenie rozmiaru tablicy
+}
+
+bool dynamic_array::isEmpty()
+{
+	return size==0;
+}
+
+int dynamic_array::getSize()
+{
+	return size;
 }
