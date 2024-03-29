@@ -17,9 +17,9 @@ public:
 	void add_begin(int element);
 	void add_end(int element);
 	void add_random(int element);
-	void delete_begin(int element);
-	void delete_end(int element);
-	void delete_random(int element);
+	void delete_begin();
+	void delete_end();
+	void delete_random();
 	bool isEmpty();
 	int getSize();
 };
