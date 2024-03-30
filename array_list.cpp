@@ -1,16 +1,21 @@
 #include "array_list.h"
+
+//Konstruktor tworzacy pusta tablice
 array_list::array_list():list()
 {
 	array = nullptr;
 	size = 0;
 	capacity = 0;
 }
-//Konstruktor
-array_list::array_list(int initialCapacity)
+//Konstruktor tworzacy tablice o ustalonym rozmiarze i wypelniona losowymi liczbami
+array_list::array_list(int array_size):list(), size(array_size),capacity(2*array_size),array(new int[capacity])
 {
-	array = new int[initialCapacity];
-	size = 0;
-	capacity = initialCapacity;
+	std::srand(static_cast<unsigned int>(std::time(nullptr))); //Inicjalizacja generatora liczb pseudolosowych
+
+	//Wypelnienie tablicy losowymi liczbami calkowitymi
+	for (int i = 0; i < size; ++i) {
+		array[i] = std::rand();
+	}
 }
 
 //Destruktor
@@ -19,10 +24,10 @@ array_list::~array_list()
 	delete[] array;
 }
 
-//Dodanie elementu na pocz¹tek tablicy
+//Dodanie elementu na poczÄ…tek tablicy
 void array_list::add_begin(int element)
 {
-	//Jeœli tablica jest pe³na, to rozmiar zostaje podwojony
+	//JeÅ›li tablica jest peÅ‚na, to rozmiar zostaje podwojony
 	if (size == capacity) {
 		enlarge();
 	}
@@ -31,14 +36,14 @@ void array_list::add_begin(int element)
 	for (int i = size; i > 0; --i) {
 		array[i] = array[i - 1];
 	}
-	array[0] = element; //Dodanie elementu na pocz¹tek tablicy
+	array[0] = element; //Dodanie elementu na poczÄ…tek tablicy
 	++size; //Zwiekszenie rozmiaru tablicy
 }
 
 //Dodanie elementu na koniec tablicy
 void array_list::add_end(int element)
 {
-	//Jeœli tablica jest pe³na, to rozmiar zostaje podwojony
+	//JeÅ›li tablica jest peÅ‚na, to rozmiar zostaje podwojony
 	if (size == capacity) {
 		enlarge();
 	}
@@ -50,31 +55,31 @@ void array_list::add_end(int element)
 void array_list::add_ind(int element, int index)
 {
 
-	//Jeœli tablica jest pe³na, to rozmiar zostaje podwojony
+	//JeÅ›li tablica jest peÅ‚na, to rozmiar zostaje podwojony
 	if (size == capacity) {
 		enlarge();
 	}
 
 	//Sprawdzenie, czy numer indeks jest prawidlowy
 	if (index > size || index < 0) {
-		std::cerr << "Nieprawidlowy numer index" << std::endl;
+		std::cerr << "Nieprawidlowy numer index \n";
 	}
 
-	//Przesuniêcie elementów od randomIndex do size w prawo
+	//PrzesuniÄ™cie elementÃ³w od randomIndex do size w prawo
 	for (int i = size; i > index; --i) {
 		array[i] = array[i - 1];
 	}
 
-	array[index] = element; //Wstawienie nowego elementu na losow¹ pozycjê
-	++size; //Zwiêkszenie rozmiaru tablicy
+	array[index] = element; //Wstawienie nowego elementu na losowÄ… pozycjÄ™
+	++size; //ZwiÄ™kszenie rozmiaru tablicy
 }
 
-//Usuniêcie elementu na pocz¹tku tablicy
+//UsuniÄ™cie elementu na poczÄ…tku tablicy
 void array_list::delete_begin()
 {
 	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
 	if (isEmpty()) {
-		std::cerr << "Tablica jest pusta." << std::endl;
+		std::cerr << "Tablica jest pusta. \n";
 	}
 
 	//Przesuniecie elementow od size do pierwszego elementu w lewo
@@ -89,7 +94,7 @@ void array_list::delete_end()
 {
 	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
 	if (isEmpty()) {
-		std::cerr << "Tablica jest pusta." << std::endl;
+		std::cerr << "Tablica jest pusta. \n";
 	}
 	--size; //Zmniejszenie rozmiaru tablicy
 }
@@ -99,12 +104,12 @@ void array_list::delete_ind(int index)
 {
 	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
 	if (isEmpty()) {
-		std::cerr << "Tablica jest pusta." << std::endl;
+		std::cerr << "Tablica jest pusta. \n";
 	}
 
 	//Sprawdzenie, czy numer indeks jest prawidlowy
 	if (index > size || index < 0) {
-		std::cerr << "Nieprawidlowy numer index" << std::endl;
+		std::cerr << "Nieprawidlowy numer index \n";
 	}
 
 	//Przesuniecie elementow od size do randomIndex w lewo
@@ -133,12 +138,82 @@ void array_list::enlarge()
 {
 	capacity *= 2;
 	int* newArray = new int[capacity];
-	//Skopiowanie zawartoœci starej tablicy do nowej
+	//Skopiowanie zawartoÅ›ci starej tablicy do nowej
 	for (int i = 0; i < size; ++i) {
 		newArray[i] = array[i];
 	}
-	//Zwolnienie pamiêci starej tablicy
+	//Zwolnienie pamiÄ™ci starej tablicy
 	delete[] array;
-	//Przypisanie nowej tablicy do wskaŸnika
+	//Przypisanie nowej tablicy do wskaÅºnika
 	array = newArray;
+}
+
+void array_list::show()
+{
+	if (isEmpty()) {
+		std::cout << "Tablica jest pusta. \n";
+		return;
+	}
+	for (int i = 0; i < size; i++) {
+		std::cout << "Element: " << array[i] << std::endl << "Numer index: " << i << std::endl;
+	}
+}
+
+void array_list::clear()
+{
+	size = 0; //Reset rozmiaru tablicy na zero, aby usunac wszystkie elementy
+}
+
+//Wyszukiwanie elementu na podstawie wartoÅ›ci
+bool array_list::find(int element)
+{
+	if (isEmpty()) {	//Sprawdzenie czy tablica jest pusta
+		return false;
+	}
+	for (int i = 0; i < size; i++) {
+		if (element == array[i]) {
+			std::cout << "Element: " << array[i] << std::endl << "Indeks elementu: " << i << std::endl;
+			return true;
+		}
+	}
+	std::cerr << "Nie znaleziono podanego elementu.";
+	return false;
+}
+
+int array_list::find_by_index(int index)
+{
+	if (index >= size || index < 0) {
+		std::cerr << "Nieprawidlowy numer index. \n";
+		return 0;
+	}
+	return array[index];
+}
+
+void array_list::load_file(const std::string& filename)
+{
+	std::ifstream file(filename);
+	if (!file.is_open()) {
+		std::cerr << "Nie mozna otworzyc pliku: " << filename << "\n";
+		return;
+	}
+	int value;
+	while (file >> value) {
+		add_end(value);
+	}
+	file.close();
+}
+
+void array_list::save_file(const std::string& filename)
+{
+	std::ofstream file(filename);
+	if (!file.is_open()) {
+		std::cerr << "Nie mozna otworzyc pliku: " << filename << "\n";
+		return;
+	}
+
+	for (int i = 0; i < size; ++i) {
+		file << array[i] << std::endl;
+	}
+
+	file.close();
 }
