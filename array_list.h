@@ -5,6 +5,8 @@
 #include "list.h"
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
+#include <fstream>
 
 class array_list: public list {
 private:
@@ -14,7 +16,7 @@ private:
 
 public:
 	array_list();
-	array_list(int initialCapacity);
+	array_list(int array_size);
 	~array_list();
 	void add_begin(int element)override;
 	void add_end(int element)override;
@@ -26,6 +28,12 @@ public:
 	int getSize();
 	int getCapacity();
 	void enlarge();
+	void show()override;
+	void clear()override;
+	bool find(int element)override;
+	int find_by_index(int index)override;
+	void load_file(const std::string& filename)override;
+	void save_file(const std::string& filename)override;
 };
 
 #endif
