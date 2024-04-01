@@ -20,7 +20,6 @@ public:
 	virtual void show() = 0;
 	virtual void clear() = 0;
 	virtual bool isEmpty() = 0;
-	virtual void print() = 0;
 	virtual int find_by_index(int index) = 0;
 	virtual bool find(int element) = 0;
 };
