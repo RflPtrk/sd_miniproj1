@@ -7,14 +7,22 @@ array_list::array_list():list()
 	size = 0;
 	capacity = 0;
 }
+
 //Konstruktor tworzacy tablice o ustalonym rozmiarze i wypelniona losowymi liczbami
-array_list::array_list(int array_size):list(), size(array_size),capacity(2*array_size),array(new int[capacity])
+array_list::array_list(int array_size):list(), size(array_size),capacity(2*array_size)
 {
-	std::srand(static_cast<unsigned int>(std::time(nullptr))); //Inicjalizacja generatora liczb pseudolosowych
+	array = new int[capacity];
+	if (!array) {
+		std::cerr << "Blad alokacji pamieci dla tablicy dynamicznej.\n";
+		return;
+	}
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int32_t> dist(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max());
 
 	//Wypelnienie tablicy losowymi liczbami calkowitymi
 	for (int i = 0; i < size; ++i) {
-		array[i] = std::rand();
+		array[i] = dist(gen);
 	}
 }
 
@@ -48,7 +56,7 @@ void array_list::add_end(int element)
 		enlarge();
 	}
 	//Dodanie elementu na koniec tablicy
-	array[++size] = element;
+	array[size++] = element;
 }
 
 //Dodanie elementu w losowe miejsce tablicy
@@ -63,6 +71,7 @@ void array_list::add_ind(int element, int index)
 	//Sprawdzenie, czy numer indeks jest prawidlowy
 	if (index > size || index < 0) {
 		std::cerr << "Nieprawidlowy numer index \n";
+		return;
 	}
 
 	//Przesunięcie elementów od randomIndex do size w prawo
@@ -80,6 +89,7 @@ void array_list::delete_begin()
 	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
 	if (isEmpty()) {
 		std::cerr << "Tablica jest pusta. \n";
+		return;
 	}
 
 	//Przesuniecie elementow od size do pierwszego elementu w lewo
@@ -95,6 +105,7 @@ void array_list::delete_end()
 	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
 	if (isEmpty()) {
 		std::cerr << "Tablica jest pusta. \n";
+		return;
 	}
 	--size; //Zmniejszenie rozmiaru tablicy
 }
@@ -105,11 +116,13 @@ void array_list::delete_ind(int index)
 	//Jesli rozmiar tablicy jest rowny zero, niech wyskoczy blad
 	if (isEmpty()) {
 		std::cerr << "Tablica jest pusta. \n";
+		return;
 	}
 
 	//Sprawdzenie, czy numer indeks jest prawidlowy
 	if (index > size || index < 0) {
 		std::cerr << "Nieprawidlowy numer index \n";
+		return;
 	}
 
 	//Przesuniecie elementow od size do randomIndex w lewo
