@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <random>
 
 class array_list: public list {
 private:
