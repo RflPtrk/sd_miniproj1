@@ -1,6 +1,7 @@
 #pragma once
 #ifndef SD1_LIST_H
 #define SD1_LIST_H
+#include <string>
 
 class list {
 public:
