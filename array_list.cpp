@@ -74,7 +74,7 @@ void array_list::add_ind(int element, int index)
 		return;
 	}
 
-	//Przesunięcie elementów od randomIndex do size w prawo
+	//Przesunięcie elementów od index do size w prawo
 	for (int i = size; i > index; --i) {
 		array[i] = array[i - 1];
 	}
@@ -126,7 +126,7 @@ void array_list::delete_ind(int index)
 	}
 
 	//Przesuniecie elementow od size do randomIndex w lewo
-	for (int i = index; i <= size; ++i) {
+	for (int i = index; i <= size; i++) {
 		array[i - 1] = array[i];
 	}
 	--size; //Zmniejszenie rozmiaru tablicy
