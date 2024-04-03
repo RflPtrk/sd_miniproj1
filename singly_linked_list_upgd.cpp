@@ -22,6 +22,7 @@ void singly_linked_list_upgd::add_begin(int element)
 
 		//Ustawienie nowego węzła na nową głowę listy
 		head = tail = added_node;
+		return;
 	}
 	//Ustawienie wskaźnika nowego węzła na dotychczasową głowę listy
 	added_node->next = head;
