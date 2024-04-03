@@ -9,6 +9,7 @@ class singly_linked_list_upgd :public singly_linked_list {
 public:
 	singly_linked_list_upgd() :singly_linked_list(), tail(nullptr) {};
 	~singly_linked_list_upgd();
+	void add_begin(int element)override;
 	void add_end(int element)override;
 	void delete_end()override;
 	void clear()override;
