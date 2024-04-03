@@ -125,7 +125,7 @@ void array_list::delete_ind(int index)
 		return;
 	}
 
-	//Przesuniecie elementow od size do randomIndex w lewo
+	//Przesuniecie elementow od size do index w lewo
 	for (int i = index; i <= size; i++) {
 		array[i - 1] = array[i];
 	}
