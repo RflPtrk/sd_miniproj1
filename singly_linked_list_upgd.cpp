@@ -12,17 +12,36 @@ singly_linked_list_upgd::~singly_linked_list_upgd()
 
 }
 
+void singly_linked_list_upgd::add_begin(int element)
+{
+	//Utworzenie nowego węzła
+	node* added_node = new node(element);
+	if(isEmpty()){
+		//Ustawienie wskaźnika nowego węzła na dotychczasową głowę listy
+		added_node->next = head;
+
+		//Ustawienie nowego węzła na nową głowę listy
+		head = tail = added_node;
+	}
+	//Ustawienie wskaźnika nowego węzła na dotychczasową głowę listy
+	added_node->next = head;
+
+	//Ustawienie nowego węzła na nową głowę listy
+	head = added_node;
+
+}
+
 void singly_linked_list_upgd::add_end(int element)
 {
 	node* added_node = new node(element);
 
-	// Je�li lista jest pusta, zar�wno g�owa (head) jak i ogon (tail) wskazuj� na nowy w�ze�
+	// Jeśli lista jest pusta, zarówno głowa (head) jak i ogon (tail) wskazują na nowy węzeł
 	if (isEmpty()) {
 		head = tail = added_node;
 	}
 	else {
-		tail->next = added_node; //Ustawienie wska�nika "next" ostatniego elementu na nowy w�ze�
-		tail = added_node; //Aktualizacja wska�nika "tail" na nowy w�ze�
+		tail->next = added_node; //Ustawienie wskaźnika "next" ostatniego elementu na nowy węzeł
+		tail = added_node; //Aktualizacja wskaźnika "tail" na nowy węzeł
 	}
 }
 
@@ -40,13 +59,13 @@ void singly_linked_list_upgd::delete_end()
 		return;
 	}
 
-	// Przej�cie przez list� do przedostatniego elementu
+	// Przejście przez listę do przedostatniego elementu
 	node* current = head;
 	while (current->next != tail) {
 		current = current->next;
 	}
 
-	// Usuni�cie ostatniego elementu z pami�ci i aktualizacja wska�nika 'tail'
+	// Usunięcie ostatniego elementu z pamięci i aktualizacja wskaźnika 'tail'
 	delete tail;
 	tail = current;
 	tail->next = nullptr;
